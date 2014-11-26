@@ -8,7 +8,7 @@ void FileManager::openingFile (const string filepath, ifstream& file){
     file.open (filepath.c_str());
 
     if(!file.is_open()) {
-        cout << "Impossible to open the file!!!" << endl;
+        cout << "Impossible to open the file!" << endl;
         exit(-1);
     }
 }
@@ -31,8 +31,6 @@ void FileManager::writingFile (string text, string type){
 /****************************************************************/
 
 int FileManager::gettingFileSize(const string filepath){
-    cout << "Getting file size..." << endl;
-
     int size = 0;
     string line;
 
@@ -42,14 +40,22 @@ int FileManager::gettingFileSize(const string filepath){
     while (getline(file, line))
         size++;
 
-    cout << "Done. File size: " << size << " lines." << endl;
+    cout << "File size: " << size << " lines." << endl;
 
     file.close();
 
     return size;
 }
 
-/****************************************************************/
+/****************************************************************
+* Esta função recebe as instâncias e o nome do arquivo, e gera um novo vetor
+* com as instâncias misturadas. Então, a função generatingRandomTests() é
+* chamada para criar os k folds e escrevê-los em novos arquivos.
+
+* This function receives the instances and the filepath, and generates
+* a new vector with the shuffled instances. Then, it calls generatingRandomTests() to
+* write the k folds accordingly.
+****************************************************************/
 
 void FileManager::kfoldTests (int k, vector <Instance>& instances, const string filepath){
     int size = gettingFileSize(filepath);
@@ -98,24 +104,20 @@ void FileManager::generatingRandomTests(const vector<string>& kfold){
     string training;
     string testing;
 
-    cout << "Creating the k training and testing files..." << endl;
-
     for (unsigned int i = 0; i < kfold.size(); i++){
         training = "";
         testing = "";
 
         for (unsigned int j = 0; j < kfold.size(); j++){
             if (i == j)
-                testing += kfold[j] + "\n";
+                testing += kfold[j];
             else
-                training += kfold[j] + "\n";
+                training += kfold[j];
         }
 
-        writingFile(training, "titanic_training_" + to_string(i));
-        writingFile(testing, "titanic_testing_" + to_string(i));
+        writingFile(training, "training_" + to_string(i));
+        writingFile(testing, "testing_" + to_string(i));
     }
-
-    cout << "Done." << endl;
 }
 
 
@@ -129,7 +131,7 @@ vector <Instance> FileManager::readingFile(const string filepath){
 	string i;
 
 	if(!file.is_open()) {
-        cout << "Impossible to open the file!!!" << endl;
+        cout << "Impossible to open the file!" << endl;
         exit(-1);
     }
 
@@ -156,6 +158,8 @@ vector <Instance> FileManager::readingFile(const string filepath){
 
     	set.push_back(in);
     }
+
+    file.close();
 
     return set;
 }

@@ -11,8 +11,15 @@
 
 using namespace std;
 
+/*********************************************************
+* Este código cria os k folds necessários para executar Validação Cruzada 
+* em uma base de dados. Separando as instâncias de forma randômica, este código
+* gera os arquivos de treinamento e testes de acordo.
 
-/*********************************************************/
+* This code creates k folds to execute cross-validation in a dataset.
+* It shuffles the instances in a random way and creates new training and
+* testing files.
+*********************************************************/
 
 int main (int argc, char* argv []){
 	if(argc == 1) {
@@ -28,18 +35,6 @@ int main (int argc, char* argv []){
         FileManager fm;
 
         data = fm.readingFile(dataset);
-
-    /* for (unsigned int i = 0; i < 10; i++){
-            vector<string> temp;
-
-            temp = data[i].getAttributes();
-
-            for (unsigned int j = 0; j < temp.size(); j++){
-                cout << temp[j] << ",";
-            }
-
-            cout << data[i].getClassification() << endl;
-        }*/
 
         fm.kfoldTests(k, data, dataset);
     }
